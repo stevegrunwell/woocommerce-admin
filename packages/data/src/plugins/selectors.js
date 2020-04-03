@@ -1,10 +1,10 @@
 export const getActivePlugins = ( state ) => {
-	return state.activePlugins || [];
+	return state.active || [];
 };
 
 export const getInstalledPlugins = ( state ) => {
-	return state.installedPlugins || [];
-}
+	return state.installed || [];
+};
 
 export const isPluginsRequesting = ( state, selector ) => {
 	return state.requesting[ selector ] || false;

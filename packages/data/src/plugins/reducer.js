@@ -1,17 +1,23 @@
 /**
+ * External Dependencies
+ */
+
+import { concat } from 'lodash';
+
+/**
  * Internal dependencies
  */
 import TYPES from './action-types';
 
 const plugins = (
-	state = { requesting: {}, errors: {} },
-	{ type, activePlugins, installedPlugins, selector, isRequesting, error }
+	state = { active: [], installed: [], requesting: {}, errors: {} },
+	{ type, active, installed, added, selector, isRequesting, error }
 ) => {
 	switch ( type ) {
 		case TYPES.UPDATE_ACTIVE_PLUGINS:
 			state = {
 				...state,
-				activePlugins,
+				active,
 				requesting: {
 					...state.requesting,
 					getActivePlugins: false,
@@ -22,10 +28,10 @@ const plugins = (
 				},
 			};
 			break;
-			case TYPES.UPDATE_INSTALLED_PLUGINS:
+		case TYPES.UPDATE_INSTALLED_PLUGINS:
 			state = {
 				...state,
-				installedPlugins,
+				installed: added ? concat( state.installed, added ) : installed,
 				requesting: {
 					...state.requesting,
 					getInstalledPlugins: false,

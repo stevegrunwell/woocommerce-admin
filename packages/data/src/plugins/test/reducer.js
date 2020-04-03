@@ -4,7 +4,7 @@
 import reducer from '../reducer';
 import TYPES from '../action-types';
 
-const defaultState = { requesting: {}, errors: {} };
+const defaultState = { active: [], installed: [], requesting: {}, errors: {} };
 
 describe( 'plugins reducer', () => {
 	it( 'should return a default state', () => {
@@ -16,7 +16,7 @@ describe( 'plugins reducer', () => {
 	it( 'should handle UPDATE_ACTIVE_PLUGINS', () => {
 		const state = reducer( defaultState, {
 			type: TYPES.UPDATE_ACTIVE_PLUGINS,
-			activePlugins: [ 'jetpack' ],
+			active: [ 'jetpack' ],
 		} );
 
 		/* eslint-disable dot-notation */
@@ -25,14 +25,14 @@ describe( 'plugins reducer', () => {
 		expect( state.errors[ 'getActivePlugins' ] ).toBe( false );
 		/* eslint-enable dot-notation */
 
-		expect( state.activePlugins ).toHaveLength( 1 );
-		expect( state.activePlugins[ 0 ] ).toBe( 'jetpack' );
+		expect( state.active ).toHaveLength( 1 );
+		expect( state.active[ 0 ] ).toBe( 'jetpack' );
 	} );
 
 	it( 'should handle UPDATE_INSTALLED_PLUGINS', () => {
 		const state = reducer( defaultState, {
 			type: TYPES.UPDATE_INSTALLED_PLUGINS,
-			installedPlugins: [ 'jetpack' ],
+			installed: [ 'jetpack' ],
 		} );
 
 		/* eslint-disable dot-notation */
@@ -41,8 +41,33 @@ describe( 'plugins reducer', () => {
 		expect( state.errors[ 'getInstalledPlugins' ] ).toBe( false );
 		/* eslint-enable dot-notation */
 
-		expect( state.installedPlugins ).toHaveLength( 1 );
-		expect( state.installedPlugins[ 0 ] ).toBe( 'jetpack' );
+		expect( state.installed ).toHaveLength( 1 );
+		expect( state.installed[ 0 ] ).toBe( 'jetpack' );
+	} );
+
+	it( 'should handle UPDATE_INSTALLED_PLUGINS with added plugins', () => {
+		const state = reducer(
+			{
+				active: [ 'jetpack' ],
+				installed: [ 'jetpack' ],
+				requesting: {},
+				errors: {},
+			},
+			{
+				type: TYPES.UPDATE_INSTALLED_PLUGINS,
+				installed: null,
+				added: [ 'woocommerce-services' ],
+			}
+		);
+
+		/* eslint-disable dot-notation */
+
+		expect( state.requesting[ 'getInstalledPlugins' ] ).toBe( false );
+		expect( state.errors[ 'getInstalledPlugins' ] ).toBe( false );
+		/* eslint-enable dot-notation */
+
+		expect( state.installed ).toHaveLength( 2 );
+		expect( state.installed[ 1 ] ).toBe( 'woocommerce-services' );
 	} );
 
 	it( 'should handle SET_IS_REQUESTING', () => {
