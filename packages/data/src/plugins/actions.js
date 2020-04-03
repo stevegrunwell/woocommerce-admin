@@ -11,11 +11,10 @@ import { __ } from '@wordpress/i18n';
 import TYPES from './action-types';
 import { WC_ADMIN_NAMESPACE } from '../constants';
 
-export function updateActivePlugins( active, added ) {
+export function updateActivePlugins( active ) {
 	return {
 		type: TYPES.UPDATE_ACTIVE_PLUGINS,
 		active,
-		added,
 	};
 }
 
