@@ -57,7 +57,8 @@ class Benefits extends Component {
 
 		if (
 			isPending &&
-			! isRequesting && ! isInstalling &&
+			! isRequesting &&
+			! isInstalling &&
 			( prevProps.isRequesting || prevState.isInstalling )
 		) {
 			goToNextStep();
@@ -224,19 +225,17 @@ class Benefits extends Component {
 					>
 						{ __( 'No thanks', 'woocommerce-admin' ) }
 					</Button>
-
-					{ isInstalling && (
-						<Plugins
-							autoInstall
-							onComplete={ () =>
-								this.setState( { isInstalling: false } )
-							}
-							onError={ () =>
-								this.setState( { isInstalling: false } )
-							}
-							pluginSlugs={ this.pluginsToInstall }
-						/>
-					) }
+					<br />
+					<Plugins
+						// autoInstall
+						onComplete={ () =>
+							this.setState( { isInstalling: false } )
+						}
+						onError={ () =>
+							this.setState( { isInstalling: false } )
+						}
+						pluginSlugs={ this.pluginsToInstall }
+					/>
 				</div>
 
 				<p className="woocommerce-profile-wizard__benefits-install-notice">

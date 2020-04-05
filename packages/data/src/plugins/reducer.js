@@ -21,10 +21,12 @@ const plugins = (
 				requesting: {
 					...state.requesting,
 					getActivePlugins: false,
+					activatePlugins: false,
 				},
 				errors: {
 					...state.errors,
 					getActivePlugins: false,
+					activatePlugins: false,
 				},
 			};
 			break;
@@ -35,10 +37,12 @@ const plugins = (
 				requesting: {
 					...state.requesting,
 					getInstalledPlugins: false,
+					installPlugin: false,
 				},
 				errors: {
 					...state.errors,
 					getInstalledPlugins: false,
+					installPlugin: false,
 				},
 			};
 			break;
