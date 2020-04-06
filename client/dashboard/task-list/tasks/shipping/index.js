@@ -25,7 +25,6 @@ import { getCountryCode } from 'dashboard/utils';
 import Plugins from '../steps/plugins';
 import StoreLocation from '../steps/location';
 import ShippingRates from './rates';
-import withWCApiSelect from 'wc-api/with-select';
 import { recordEvent } from 'lib/tracks';
 
 class Shipping extends Component {
@@ -322,20 +321,15 @@ class Shipping extends Component {
 }
 
 export default compose(
-	withWCApiSelect( ( select ) => {
-		const { isJetpackConnected } = select( 'wc-api' );
-
-		return {
-			isJetpackConnected: isJetpackConnected(),
-		};
-	} ),
 	withSelect( ( select ) => {
 		const {
 			getSettings,
 			getSettingsError,
 			isGetSettingsRequesting,
 		} = select( SETTINGS_STORE_NAME );
-		const { getActivePlugins } = select( PLUGINS_STORE_NAME );
+		const { getActivePlugins, isJetpackConnected } = select(
+			PLUGINS_STORE_NAME
+		);
 
 		const { general: settings = {} } = getSettings( 'general' );
 		const isSettingsError = Boolean( getSettingsError( 'general' ) );
@@ -359,6 +353,7 @@ export default compose(
 			isSettingsRequesting,
 			settings,
 			activePlugins,
+			isJetpackConnected: isJetpackConnected(),
 		};
 	} ),
 	withDispatch( ( dispatch ) => {

@@ -476,9 +476,11 @@ class Tax extends Component {
 
 export default compose(
 	withWCApiSelect( ( select ) => {
-		const { getOptions, isJetpackConnected } = select( 'wc-api' );
+		const { getOptions } = select( 'wc-api' );
 
-		const { getActivePlugins } = select( PLUGINS_STORE_NAME );
+		const { getActivePlugins, isJetpackConnected } = select(
+			PLUGINS_STORE_NAME
+		);
 		const activePlugins = getActivePlugins();
 		const pluginsToActivate = difference(
 			[ 'jetpack', 'woocommerce-services' ],

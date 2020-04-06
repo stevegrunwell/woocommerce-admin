@@ -511,11 +511,12 @@ export default compose(
 			getPluginActivations,
 			getPluginActivationErrors,
 			getPluginInstallationErrors,
-			isJetpackConnected,
 			isPluginActivateRequesting,
 			isPluginInstallRequesting,
 		} = select( 'wc-api' );
-		const { getActivePlugins } = select( PLUGINS_STORE_NAME );
+		const { getActivePlugins, isJetpackConnected } = select(
+			PLUGINS_STORE_NAME
+		);
 
 		const isRequesting =
 			isPluginActivateRequesting() || isPluginInstallRequesting();

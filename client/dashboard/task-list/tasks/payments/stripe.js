@@ -454,10 +454,11 @@ export default compose(
 		const {
 			getOptions,
 			getOptionsError,
-			isJetpackConnected,
 			isUpdateOptionsRequesting,
 		} = select( 'wc-api' );
-		const { getActivePlugins } = select( PLUGINS_STORE_NAME );
+		const { getActivePlugins, isJetpackConnected } = select(
+			PLUGINS_STORE_NAME
+		);
 		const options = getOptions( [
 			'woocommerce_stripe_settings',
 			'woocommerce_default_country',
