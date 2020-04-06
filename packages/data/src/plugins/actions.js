@@ -3,13 +3,14 @@
  */
 
 import { apiFetch } from '@wordpress/data-controls';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 
 /**
  * Internal Dependencies
  */
 import TYPES from './action-types';
 import { WC_ADMIN_NAMESPACE } from '../constants';
+import { pluginNames } from './constants';
 
 export function updateActivePlugins( active ) {
 	return {
@@ -42,6 +43,37 @@ export function setError( selector, error ) {
 	};
 }
 
+function getPluginErrorMessage( action, plugin ) {
+	const pluginName = pluginNames[ plugin ] || plugin;
+	switch ( action ) {
+		case 'install':
+			return sprintf(
+				__(
+					'There was an error installing %s. Please try again.',
+					'woocommerce-admin'
+				),
+				pluginName
+			);
+		case 'connect':
+			return sprintf(
+				__(
+					'There was an error connecting to %s. Please try again.',
+					'woocommerce-admin'
+				),
+				pluginName
+			);
+		case 'activate':
+		default:
+			return sprintf(
+				__(
+					'There was an error activating %s. Please try again.',
+					'woocommerce-admin'
+				),
+				pluginName
+			);
+	}
+}
+
 export function* installPlugin( plugin ) {
 	yield setIsRequesting( 'installPlugin', true );
 
@@ -57,10 +89,11 @@ export function* installPlugin( plugin ) {
 			return results;
 		}
 
-		throw new Error( __( 'Plugin installation error' ) );
+		throw new Error();
 	} catch ( error ) {
-		yield setError( 'installPlugin', error );
-		return error;
+		const errorMsg = getPluginErrorMessage( 'install', plugin );
+		yield setError( 'installPlugin', errorMsg );
+		return errorMsg;
 	}
 }
 
@@ -79,9 +112,11 @@ export function* activatePlugins( plugins ) {
 			return results;
 		}
 
-		throw new Error( __( 'Plugin activation error' ) );
+		throw new Error();
 	} catch ( error ) {
 		yield setError( 'activatePlugins', error );
-		return error;
+		return plugins.map( ( plugin ) => {
+			return getPluginErrorMessage( 'activate', plugin );
+		} );
 	}
 }

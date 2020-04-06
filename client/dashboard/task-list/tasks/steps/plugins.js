@@ -75,14 +75,14 @@ class Plugins extends Component {
 			return;
 		}
 
-		this.handleErrors( [ activations ] );
+		this.handleErrors( activations );
 	}
 
 	handleErrors( errors ) {
 		const { onError, createNotice } = this.props;
 
 		errors.forEach( ( error ) => {
-			createNotice( 'error', error.message );
+			createNotice( 'error', error );
 		} );
 
 		onError( errors );
