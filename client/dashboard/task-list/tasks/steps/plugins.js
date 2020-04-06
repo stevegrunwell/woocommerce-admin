@@ -85,8 +85,8 @@ class Plugins extends Component {
 			createNotice( 'error', error );
 		} );
 
-		onError( errors );
 		this.setState( { hasErrors: true } );
+		onError( errors );
 	}
 
 	handleSuccess( activePlugins ) {
