@@ -47,7 +47,15 @@ export function updateIsJetpackConnected( jetpackConnection ) {
 	return {
 		type: TYPES.UPDATE_JETPACK_CONNECTION,
 		jetpackConnection,
-	}
+	};
+}
+
+export function updateJetpackConnectUrl( redirectUrl, jetpackConnectUrl ) {
+	return {
+		type: TYPES.UPDATE_JETPACK_CONNECT_URL,
+		jetpackConnectUrl,
+		redirectUrl,
+	};
 }
 
 function getPluginErrorMessage( action, plugin ) {

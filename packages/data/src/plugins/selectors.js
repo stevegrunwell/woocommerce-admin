@@ -14,4 +14,8 @@ export const getPluginsError = ( state, selector ) => {
 	return state.errors[ selector ] || false;
 };
 
-export const isJetpackConnected = state => state.jetpackConnection;
+export const isJetpackConnected = ( state ) => state.jetpackConnection;
+
+export const getJetpackConnectUrl = ( state, query ) => {
+	return state.jetpackConnectUrls[ query.redirect_url ];
+};

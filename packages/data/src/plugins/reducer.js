@@ -10,8 +10,25 @@ import { concat } from 'lodash';
 import TYPES from './action-types';
 
 const plugins = (
-	state = { active: [], installed: [], requesting: {}, errors: {} },
-	{ type, active, installed, added, selector, isRequesting, error, jetpackConnection }
+	state = {
+		active: [],
+		installed: [],
+		requesting: {},
+		errors: {},
+		jetpackConnectUrls: {},
+	},
+	{
+		type,
+		active,
+		installed,
+		added,
+		selector,
+		isRequesting,
+		error,
+		jetpackConnection,
+		redirectUrl,
+		jetpackConnectUrl,
+	}
 ) => {
 	switch ( type ) {
 		case TYPES.UPDATE_ACTIVE_PLUGINS:
@@ -68,11 +85,20 @@ const plugins = (
 				},
 			};
 			break;
-		 case TYPES.UPDATE_JETPACK_CONNECTION:
-			 state = {
-				 ...state,
-				 jetpackConnection,
-			 };
+		case TYPES.UPDATE_JETPACK_CONNECTION:
+			state = {
+				...state,
+				jetpackConnection,
+			};
+			break;
+		case TYPES.UPDATE_JETPACK_CONNECT_URL:
+			state = {
+				...state,
+				jetpackConnectUrls: {
+					...state.jetpackConnectUrl,
+					[ redirectUrl ]: jetpackConnectUrl,
+				},
+			};
 	}
 	return state;
 };
