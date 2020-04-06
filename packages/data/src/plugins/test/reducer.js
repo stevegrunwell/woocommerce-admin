@@ -4,7 +4,13 @@
 import reducer from '../reducer';
 import TYPES from '../action-types';
 
-const defaultState = { active: [], installed: [], requesting: {}, errors: {} };
+const defaultState = {
+	active: [],
+	installed: [],
+	requesting: {},
+	errors: {},
+	jetpackConnectUrls: {},
+};
 
 describe( 'plugins reducer', () => {
 	it( 'should return a default state', () => {

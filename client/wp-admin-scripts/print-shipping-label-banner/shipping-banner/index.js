@@ -464,7 +464,7 @@ ShippingBanner.propTypes = {
 	activationErrors: PropTypes.array.isRequired,
 	installationErrors: PropTypes.array.isRequired,
 	activatePlugins: PropTypes.func.isRequired,
-	installPlugins: PropTypes.func.isRequired,
+	installPlugin: PropTypes.func.isRequired,
 	isRequesting: PropTypes.bool.isRequired,
 };
 

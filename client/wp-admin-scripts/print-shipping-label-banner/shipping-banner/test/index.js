@@ -42,7 +42,7 @@ describe( 'Tracking impression in shippingBanner', () => {
 				itemsCount={ 1 }
 				wcsPluginSlug={ wcsPluginSlug }
 				activatePlugins={ jest.fn() }
-				installPlugins={ jest.fn() }
+				installPlugin={ jest.fn() }
 				isRequesting={ false }
 			/>
 		);
@@ -79,7 +79,7 @@ describe( 'Tracking clicks in shippingBanner', () => {
 				activatedPlugins={ [] }
 				activePlugins={ [ wcsPluginSlug, 'jetpack' ] }
 				installedPlugins={ [ wcsPluginSlug, 'jetpack' ] }
-				installPlugins={ jest.fn() }
+				installPlugin={ jest.fn() }
 				activatePlugins={ jest.fn() }
 				wcsPluginSlug={ wcsPluginSlug }
 				activationErrors={ [] }
@@ -126,7 +126,7 @@ describe( 'Tracking clicks in shippingBanner', () => {
 
 describe( 'Create shipping label button', () => {
 	let shippingBannerWrapper;
-	const installPlugins = jest.fn();
+	const installPlugin = jest.fn();
 	const activatePlugins = jest.fn();
 	delete window.location; // jsdom won't allow to rewrite window.location unless deleted first
 	window.location = {
@@ -139,8 +139,8 @@ describe( 'Create shipping label button', () => {
 				isJetpackConnected={ true }
 				activatePlugins={ activatePlugins }
 				activePlugins={ [] }
-				activatedPlugins={ [] }
-				installPlugins={ installPlugins }
+				activatedPlugins={ activatePlugins }
+				installPlugin={ installPlugin }
 				installedPlugins={ [] }
 				wcsPluginSlug={ 'woocommerce-services' }
 				activationErrors={ [] }
@@ -155,7 +155,8 @@ describe( 'Create shipping label button', () => {
 		const createShippingLabelButton = shippingBannerWrapper.find( Button );
 		expect( createShippingLabelButton.length ).toBe( 1 );
 		createShippingLabelButton.simulate( 'click' );
-		expect( installPlugins ).toHaveBeenCalledWith( [
+		expect( installPlugin ).toHaveBeenCalledWith( 'woocommerce-services' );
+		expect( activatePlugins ).toHaveBeenCalledWith( [
 			'woocommerce-services',
 		] );
 	} );
@@ -301,7 +302,7 @@ describe( 'In the process of installing, activating, loading assets for WooComme
 				activatePlugins={ jest.fn() }
 				activePlugins={ [ 'jetpack', 'woocommerce-services' ] }
 				activatedPlugins={ [] }
-				installPlugins={ jest.fn() }
+				installPlugin={ jest.fn() }
 				installedPlugins={ [] }
 				wcsPluginSlug={ 'woocommerce-services' }
 				activationErrors={ [] }
@@ -338,7 +339,7 @@ describe( 'Setup error message', () => {
 				activatePlugins={ jest.fn() }
 				activePlugins={ [ 'jetpack', 'woocommerce-services' ] }
 				activatedPlugins={ [] }
-				installPlugins={ jest.fn() }
+				installPlugin={ jest.fn() }
 				installedPlugins={ [] }
 				wcsPluginSlug={ 'woocommerce-services' }
 				activationErrors={ [] }
@@ -397,7 +398,7 @@ describe( 'The message in the banner', () => {
 				activatePlugins={ jest.fn() }
 				activePlugins={ activePlugins }
 				activatedPlugins={ [] }
-				installPlugins={ jest.fn() }
+				installPlugin={ jest.fn() }
 				installedPlugins={ installedPlugins }
 				wcsPluginSlug={ 'woocommerce-services' }
 				activationErrors={ [] }
