@@ -201,7 +201,6 @@ Plugins.defaultProps = {
 
 export default compose(
 	withSelect( ( select ) => {
-		// const { pluginSlugs } = props;
 		const {
 			getActivePlugins,
 			getInstalledPlugins,
