@@ -11,7 +11,7 @@ import TYPES from './action-types';
 
 const plugins = (
 	state = { active: [], installed: [], requesting: {}, errors: {} },
-	{ type, active, installed, added, selector, isRequesting, error }
+	{ type, active, installed, added, selector, isRequesting, error, jetpackConnection }
 ) => {
 	switch ( type ) {
 		case TYPES.UPDATE_ACTIVE_PLUGINS:
@@ -67,6 +67,12 @@ const plugins = (
 					[ selector ]: error,
 				},
 			};
+			break;
+		 case TYPES.UPDATE_JETPACK_CONNECTION:
+			 state = {
+				 ...state,
+				 jetpackConnection,
+			 };
 	}
 	return state;
 };

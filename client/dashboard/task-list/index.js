@@ -438,10 +438,10 @@ class TaskDashboard extends Component {
 
 export default compose(
 	withSelect( ( select, props ) => {
-		const { getProfileItems, getOptions, isJetpackConnected } = select(
+		const { getProfileItems, getOptions } = select(
 			'wc-api'
 		);
-		const { getActivePlugins, getInstalledPlugins } = select(
+		const { getActivePlugins, getInstalledPlugins, isJetpackConnected } = select(
 			PLUGINS_STORE_NAME
 		);
 		const profileItems = getProfileItems();

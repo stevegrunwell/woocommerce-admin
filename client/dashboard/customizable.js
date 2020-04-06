@@ -32,7 +32,10 @@ import {
 } from 'lib/date';
 import ReportFilters from 'analytics/components/report-filters';
 
-const HydratedTaskList = withPluginsHydration( window.wcSettings.plugins )(
+const HydratedTaskList = withPluginsHydration( {
+	...window.wcSettings.plugins,
+	jetpackStatus: window.wcSettings.dataEndpoints.jetpackStatus,
+} )(
 	TaskList
 );
 const DASHBOARD_FILTERS_FILTER = 'woocommerce_admin_dashboard_filters';

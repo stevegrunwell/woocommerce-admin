@@ -7,7 +7,7 @@ import { apiFetch, dispatch } from '@wordpress/data-controls';
 /**
  * Internal dependencies
  */
-import { WC_ADMIN_NAMESPACE } from '../constants';
+import { WC_ADMIN_NAMESPACE, JETPACK_NAMESPACE } from '../constants';
 import { STORE_NAME } from './constants';
 
 export function* getActivePlugins() {
@@ -39,5 +39,21 @@ export function* getInstalledPlugins() {
 		yield dispatch( STORE_NAME, 'updateInstalledPlugins', results );
 	} catch ( error ) {
 		yield dispatch( STORE_NAME, 'setError', 'getInstalledPlugins', error );
+	}
+}
+
+export function* isJetpackConnected () {
+	yield dispatch( STORE_NAME, 'setIsRequesting', 'isJetpackConnected', true );
+
+	try {
+		const url = JETPACK_NAMESPACE + '/connection';
+		const results = yield apiFetch( {
+			path: url,
+			method: 'GET',
+		} );
+
+		yield dispatch( STORE_NAME, 'updateIsJetpackConnected', results.isActive );
+	} catch ( error ) {
+		yield dispatch( STORE_NAME, 'setError', 'isJetpackConnected', error );
 	}
 }

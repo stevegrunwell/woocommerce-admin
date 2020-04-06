@@ -24,6 +24,7 @@ export const withPluginsHydration = ( data ) => ( OriginalComponent ) => {
 				finishResolution,
 				updateActivePlugins,
 				updateInstalledPlugins,
+				updateIsJetpackConnected,
 			} = registry.dispatch( STORE_NAME );
 
 			if (
@@ -32,10 +33,13 @@ export const withPluginsHydration = ( data ) => ( OriginalComponent ) => {
 			) {
 				startResolution( 'getActivePlugins', [] );
 				startResolution( 'getInstalledPlugins', [] );
+				startResolution( 'isJetpackConnected', [] );
 				updateActivePlugins( dataRef.current.activePlugins );
 				updateInstalledPlugins( dataRef.current.installedPlugins );
+				updateIsJetpackConnected( dataRef.current.jetpackStatus.isActive );
 				finishResolution( 'getActivePlugins', [] );
 				finishResolution( 'getInstalledPlugins', [] );
+				finishResolution( 'isJetpackConnected', [] );
 			}
 		}, [] );
 

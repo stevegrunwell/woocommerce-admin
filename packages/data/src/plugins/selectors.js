@@ -13,3 +13,5 @@ export const isPluginsRequesting = ( state, selector ) => {
 export const getPluginsError = ( state, selector ) => {
 	return state.errors[ selector ] || false;
 };
+
+export const isJetpackConnected = state => state.jetpackConnection;

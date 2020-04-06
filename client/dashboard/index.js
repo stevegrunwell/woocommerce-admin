@@ -27,7 +27,10 @@ if (
 
 if ( window.wcSettings.plugins ) {
 	PossiblyHydratedProfileWizard = withPluginsHydration(
-		window.wcSettings.plugins
+		{
+			...window.wcSettings.plugins,
+			jetpackStatus: window.wcSettings.dataEndpoints.jetpackStatus,
+		}
 	)( PossiblyHydratedProfileWizard );
 }
 

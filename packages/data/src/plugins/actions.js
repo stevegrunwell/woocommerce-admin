@@ -43,6 +43,13 @@ export function setError( selector, error ) {
 	};
 }
 
+export function updateIsJetpackConnected( jetpackConnection ) {
+	return {
+		type: TYPES.UPDATE_JETPACK_CONNECTION,
+		jetpackConnection,
+	}
+}
+
 function getPluginErrorMessage( action, plugin ) {
 	const pluginName = pluginNames[ plugin ] || plugin;
 	switch ( action ) {
