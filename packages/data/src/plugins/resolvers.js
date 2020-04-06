@@ -2,18 +2,24 @@
  * External Dependencies
  */
 
-import { apiFetch, dispatch } from '@wordpress/data-controls';
+import { apiFetch } from '@wordpress/data-controls';
 import { addQueryArgs } from '@wordpress/url';
 
 /**
  * Internal dependencies
  */
 import { WC_ADMIN_NAMESPACE, JETPACK_NAMESPACE } from '../constants';
-import { STORE_NAME } from './constants';
+import {
+	setIsRequesting,
+	updateActivePlugins,
+	setError,
+	updateInstalledPlugins,
+	updateIsJetpackConnected,
+	updateJetpackConnectUrl,
+} from './actions';
 
 export function* getActivePlugins() {
-	yield dispatch( STORE_NAME, 'setIsRequesting', 'getActivePlugins', true );
-
+	yield setIsRequesting( 'getActivePlugins', true );
 	try {
 		const url = WC_ADMIN_NAMESPACE + '/onboarding/plugins/active';
 		const results = yield apiFetch( {
@@ -21,19 +27,14 @@ export function* getActivePlugins() {
 			method: 'GET',
 		} );
 
-		yield dispatch( STORE_NAME, 'updateActivePlugins', results.plugins );
+		yield updateActivePlugins( results.plugins );
 	} catch ( error ) {
-		yield dispatch( STORE_NAME, 'setError', 'getActivePlugins', error );
+		yield setError( 'getActivePlugins', error );
 	}
 }
 
 export function* getInstalledPlugins() {
-	yield dispatch(
-		STORE_NAME,
-		'setIsRequesting',
-		'getInstalledPlugins',
-		true
-	);
+	yield setIsRequesting( 'getInstalledPlugins', true );
 
 	try {
 		const url = WC_ADMIN_NAMESPACE + '/onboarding/plugins/installed';
@@ -42,14 +43,14 @@ export function* getInstalledPlugins() {
 			method: 'GET',
 		} );
 
-		yield dispatch( STORE_NAME, 'updateInstalledPlugins', results );
+		yield updateInstalledPlugins( results );
 	} catch ( error ) {
-		yield dispatch( STORE_NAME, 'setError', 'getInstalledPlugins', error );
+		yield setError( 'getInstalledPlugins', error );
 	}
 }
 
 export function* isJetpackConnected() {
-	yield dispatch( STORE_NAME, 'setIsRequesting', 'isJetpackConnected', true );
+	yield setIsRequesting( 'isJetpackConnected', true );
 
 	try {
 		const url = JETPACK_NAMESPACE + '/connection';
@@ -58,30 +59,16 @@ export function* isJetpackConnected() {
 			method: 'GET',
 		} );
 
-		yield dispatch(
-			STORE_NAME,
-			'updateIsJetpackConnected',
-			results.isActive
-		);
+		yield updateIsJetpackConnected( results.isActive );
 	} catch ( error ) {
-		yield dispatch( STORE_NAME, 'setError', 'isJetpackConnected', error );
+		yield setError( 'isJetpackConnected', error );
 	}
 
-	yield dispatch(
-		STORE_NAME,
-		'setIsRequesting',
-		'isJetpackConnected',
-		false
-	);
+	yield setIsRequesting( 'isJetpackConnected', false );
 }
 
 export function* getJetpackConnectUrl( query ) {
-	yield dispatch(
-		STORE_NAME,
-		'setIsRequesting',
-		'getJetpackConnectUrl',
-		true
-	);
+	yield setIsRequesting( 'getJetpackConnectUrl', true );
 
 	try {
 		const url = addQueryArgs(
@@ -93,20 +80,13 @@ export function* getJetpackConnectUrl( query ) {
 			method: 'GET',
 		} );
 
-		yield dispatch(
-			STORE_NAME,
-			'updateJetpackConnectUrl',
+		yield updateJetpackConnectUrl(
 			query.redirect_url,
 			results.connectAction
 		);
 	} catch ( error ) {
-		yield dispatch( STORE_NAME, 'setError', 'getJetpackConnectUrl', error );
+		yield setError( 'getJetpackConnectUrl', error );
 	}
 
-	yield dispatch(
-		STORE_NAME,
-		'setIsRequesting',
-		'getJetpackConnectUrl',
-		false
-	);
+	yield setIsRequesting( 'getJetpackConnectUrl', false );
 }
