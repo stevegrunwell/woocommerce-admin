@@ -120,7 +120,9 @@ describe( 'Create shipping label button', () => {
 	const installPlugin = jest.fn().mockReturnValue( {
 		status: 'success',
 	} );
-	const activatePlugins = jest.fn();
+	const activatePlugins = jest.fn().mockReturnValue( {
+		status: 'success',
+	} );
 	delete window.location; // jsdom won't allow to rewrite window.location unless deleted first
 	window.location = {
 		href: 'http://wcship.test/wp-admin/post.php?post=1000&action=edit',
@@ -335,10 +337,10 @@ describe( 'Setup error message', () => {
 		expect( shippingBannerWrapper.instance().isSetupError() ).toBe( false );
 	} );
 
-	it( 'should show if there is installation error', () => {
-		const createShippingLabelButton = shippingBannerWrapper.find( Button );
-		expect( createShippingLabelButton.length ).toBe( 1 );
-		createShippingLabelButton.simulate( 'click' );
+	it( 'should show if there is installation error', async () => {
+		await shippingBannerWrapper
+			.instance()
+			.installAndActivatePlugins( 'woocommerce-services' );
 
 		expect( shippingBannerWrapper.instance().isSetupError() ).toBe( true );
 		expect( shippingBannerWrapper.instance().state.setupErrorReason ).toBe(
@@ -346,7 +348,7 @@ describe( 'Setup error message', () => {
 		);
 	} );
 
-	it( 'should show if there is activation error', () => {
+	it( 'should show if there is activation error', async () => {
 		// Create a new wrapper with an installPlugin that passes.
 		const wrapper = shallow(
 			<ShippingBanner
@@ -361,12 +363,12 @@ describe( 'Setup error message', () => {
 			/>
 		);
 
-		const createShippingLabelButton = wrapper.find( Button );
-		expect( createShippingLabelButton.length ).toBe( 1 );
-		createShippingLabelButton.simulate( 'click' );
+		await wrapper
+			.instance()
+			.installAndActivatePlugins( 'woocommerce-services' );
 
 		expect( wrapper.instance().isSetupError() ).toBe( true );
-		expect( shippingBannerWrapper.instance().state.setupErrorReason ).toBe(
+		expect( wrapper.instance().state.setupErrorReason ).toBe(
 			setupErrorTypes.ACTIVATE
 		);
 	} );
