@@ -27,6 +27,7 @@ import { withDispatch } from '@wordpress/data';
 import { getWcsAssets, acceptWcsTos } from '../wcs-api';
 
 const wcAdminAssetUrl = getSetting( 'wcAdminAssetUrl', '' );
+const wcsPluginSlug = 'woocommerce-services';
 
 export class ShippingBanner extends Component {
 	constructor( props ) {
@@ -77,7 +78,7 @@ export class ShippingBanner extends Component {
 	};
 
 	createShippingLabelClicked = () => {
-		const { wcsPluginSlug, activePlugins } = this.props;
+		const { activePlugins } = this.props;
 		this.setState( { isShippingLabelButtonBusy: true } );
 		this.trackElementClicked( 'shipping_banner_create_label' );
 		if ( ! activePlugins.includes( wcsPluginSlug ) ) {
@@ -119,7 +120,7 @@ export class ShippingBanner extends Component {
 	};
 
 	trackBannerEvent = ( eventName, customProps = {} ) => {
-		const { activePlugins, isJetpackConnected, wcsPluginSlug } = this.props;
+		const { activePlugins, isJetpackConnected } = this.props;
 		recordEvent( eventName, {
 			banner_name: 'wcadmin_install_wcs_prompt',
 			jetpack_installed: activePlugins.includes( 'jetpack' ),
@@ -247,7 +248,7 @@ export class ShippingBanner extends Component {
 	}
 
 	getInstallText = () => {
-		const { activePlugins, wcsPluginSlug } = this.props;
+		const { activePlugins } = this.props;
 		if ( activePlugins.includes( wcsPluginSlug ) ) {
 			// If WCS is active, then the only remaining step is to agree to the ToS.
 			return __(
@@ -457,12 +458,7 @@ export class ShippingBanner extends Component {
 ShippingBanner.propTypes = {
 	itemsCount: PropTypes.number.isRequired,
 	isJetpackConnected: PropTypes.bool.isRequired,
-	activatedPlugins: PropTypes.array.isRequired,
 	activePlugins: PropTypes.array.isRequired,
-	installedPlugins: PropTypes.array.isRequired,
-	wcsPluginSlug: PropTypes.string.isRequired,
-	activationErrors: PropTypes.array.isRequired,
-	installationErrors: PropTypes.array.isRequired,
 	activatePlugins: PropTypes.func.isRequired,
 	installPlugin: PropTypes.func.isRequired,
 	isRequesting: PropTypes.bool.isRequired,
@@ -470,7 +466,11 @@ ShippingBanner.propTypes = {
 
 export default compose(
 	withSelect( ( select ) => {
-		const { isPluginsRequesting } = select( PLUGINS_STORE_NAME );
+		const {
+			isPluginsRequesting,
+			isJetpackConnected,
+			getActivePlugins,
+		} = select( PLUGINS_STORE_NAME );
 
 		const isRequesting =
 			isPluginsRequesting( 'activatePlugins' ) ||
@@ -478,6 +478,8 @@ export default compose(
 
 		return {
 			isRequesting,
+			isJetpackConnected: isJetpackConnected(),
+			activePlugins: getActivePlugins(),
 		};
 	} ),
 	withDispatch( ( dispatch ) => {
